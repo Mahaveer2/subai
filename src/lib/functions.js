@@ -24,7 +24,7 @@ export async function getResult(type,bsName,desc) {
 export async function MakeImage(prompt){
 	let image_url;
 	const response = await openai.createImage({
-		prompt: `make a logo on the following description "${prompt}"`,
+		prompt: `make a logo on the following buisness "${prompt}" logo, digital art, vector ;3d; isometric;flat;logo;illustration;pencil sketch`,
 		n: 1,
 		size: "1024x1024",
 	});
@@ -35,7 +35,7 @@ export async function MakeImage(prompt){
 export async function createPallete(prompt){
 	let image_url;
 	const response = await openai.createImage({
-		prompt: `make a color pallete based on the following description "${prompt}"`,
+		prompt: `make a color pallete based on the following description "${prompt}" ; with color hex codes`,
 		n: 1,
 		size: "1024x1024",
 	});
