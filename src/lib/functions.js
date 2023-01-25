@@ -32,13 +32,28 @@ export async function MakeImage(prompt){
 	return image_url;
 }
 
-export async function createPallete(prompt){
-	let image_url;
-	const response = await openai.createImage({
-		prompt: `make a color pallete based on the following description "${prompt}" ; with color hex codes`,
-		n: 1,
-		size: "1024x1024",
+export async function createTypo(buisness){
+	let prompt = `What is the best typography for a ${buisness} business, according to the latest design trends and audience preferences`;
+	let output = await openai.createCompletion({
+		model:"text-davinci-003",
+		prompt:prompt,
+		max_tokens:2000,
+		temperature:0.4,
+	})
+
+	let response = output.data.choices[0].text;
+	return response;
+}
+
+export async function createPallete(type,bsName){
+	let output;
+	output = await openai.createCompletion({
+		model: 'text-davinci-003',
+		prompt: `create a json array of colors using the following structure: {colorname,hexcode}; generate the color on the basis on "${bsName}" and the type of buisness is "${type}" ; the response must be in json!;at least 4 colors;`,
+		max_tokens: 2000,
+		temperature: 0.4,
 	});
-	image_url = response.data.data[0].url;
-	return image_url;
+	output = output.data.choices[0].text;
+
+	return JSON.parse(output);
 }
