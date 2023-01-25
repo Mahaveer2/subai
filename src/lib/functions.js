@@ -10,15 +10,13 @@ export async function getResult(type,bsName,desc) {
 	let output;
 	output = await openai.createCompletion({
 		model: 'text-davinci-003',
-		prompt: `create a slogan name and voice personality type like luxury formal or friendly on the following data buisness type is ${type} name is ${bsName} also create a typography and a prompt for dalle image generation api to make a logo on the given data and here is a description about the buisness ${desc} give resposne in json structure as following : {slogan,voice,typography,logo_prompt} must be json stringified`,
+		prompt: `create a slogan name and voice personality type like luxury formal or friendly on the following data buisness type is ${type} name is ${bsName} also create a typography and a prompt for dalle image generation api to make a logo on the given data and here is a description about the buisness ${desc} give resposne in json structure  : {slogan,voice,typography,logo_prompt} must be json stringified`,
 		max_tokens: 2000,
 		temperature: 0.4,
 	});
 	output = output.data.choices[0].text;
 
 	return JSON.parse(output);
-
-	
 }
 
 export async function MakeImage(prompt){
@@ -33,27 +31,27 @@ export async function MakeImage(prompt){
 }
 
 export async function createTypo(buisness){
-	let prompt = `What is the best typography for a ${buisness} business, according to the latest design trends and audience preferences`;
+	let prompt = `What is the best typography for a ${buisness} business according to the ux and trends`;
 	let output = await openai.createCompletion({
 		model:"text-davinci-003",
 		prompt:prompt,
 		max_tokens:2000,
-		temperature:0.4,
+		temperature:0.6,
 	})
 
 	let response = output.data.choices[0].text;
+	console.log(response)
 	return response;
 }
 
 export async function createPallete(type,bsName){
-	let output;
-	output = await openai.createCompletion({
+	let output = await openai.createCompletion({
 		model: 'text-davinci-003',
-		prompt: `create a json array of colors using the following structure: {colorname,hexcode}; generate the color on the basis on "${bsName}" and the type of buisness is "${type}" ; the response must be in json!;at least 4 colors;`,
+		prompt: `use the following json structure : {colorname,hexcode} to make an array of colors for the buisness ${type} the colors should match the buisness and must be atleast 5 items ;the json should be valid`,
 		max_tokens: 2000,
-		temperature: 0.4,
+		temperature: 0.2,
 	});
-	output = output.data.choices[0].text;
-
-	return JSON.parse(output);
+	let resp = output.data.choices[0].text;
+	console.log(JSON.parse(resp));
+	return JSON.parse(resp);
 }
