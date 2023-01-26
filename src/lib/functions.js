@@ -33,7 +33,7 @@ export async function MakePackaging(buisness,name){
 export async function MakeImage(prompt,name){
 	let image_url;
 	const response = await openai.createImage({
-		prompt: prompt + " with the name of company "+ name,
+		prompt: prompt + " for the following company named "+ name,
 		n: 1,
 		size: "1024x1024",
 	});
