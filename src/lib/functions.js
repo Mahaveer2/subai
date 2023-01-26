@@ -19,10 +19,21 @@ export async function getResult(type,bsName,desc) {
 	return JSON.parse(output);
 }
 
-export async function MakeImage(prompt){
+export async function MakePackaging(buisness,details){
+	let img_url;
+	const response = await openai.createImage({
+		prompt:`Packaging design for a ${buisness} product featuring ${details}`,
+		n:4,
+		size:"1024x1024"
+	});
+	img_url = response.data.data;
+	return img_url;
+}
+
+export async function MakeImage(prompt,name){
 	let image_url;
 	const response = await openai.createImage({
-		prompt: `make a logo on the following buisness "${prompt}" logo, digital art, vector ;3d; isometric;flat;logo;illustration;pencil sketch`,
+		prompt: prompt + " with the name of company "+ name,
 		n: 1,
 		size: "1024x1024",
 	});
@@ -40,7 +51,6 @@ export async function createTypo(buisness){
 	})
 
 	let response = output.data.choices[0].text;
-	console.log(response)
 	return response;
 }
 
@@ -52,6 +62,5 @@ export async function createPallete(type,bsName){
 		temperature: 0.2,
 	});
 	let resp = output.data.choices[0].text;
-	console.log(JSON.parse(resp));
 	return JSON.parse(resp);
 }

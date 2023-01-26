@@ -1,6 +1,6 @@
 <script>
 	import './form.css';
-	import { getResult, MakeImage, createTypo, createPallete } from '$lib/functions';
+	import { getResult,MakePackaging, MakeImage, createTypo, createPallete } from '$lib/functions';
 	import Spinner from '$lib/components/Spinner.svelte';
 	import Form from '../../lib/components/Form.svelte';
 	import { each } from 'svelte/internal';
@@ -10,6 +10,7 @@
 	let url = null;
 	let pallete = [];
 	let typo = '';
+	let packaging = [];
 
 	const handleSubmit = async (e) => {
 		loading = true;
@@ -17,17 +18,20 @@
 		getResult(fomrdata.get('buisness'), fomrdata.get('name'), fomrdata.get('description')).then(
 			(d) => {
 				data = d;
-				MakeImage(d.logo_prompt).then((_url) => {
+				MakeImage(d.logo_prompt,fomrdata.get('name')).then((_url) => {
 					loading = false;
 					url = _url;
 				});
+
+				MakePackaging(fomrdata.get('buisness'),fomrdata.get('description')).then(res => {
+					packaging = res;
+				})
 
 				createPallete(fomrdata.get('buisness'), fomrdata.get('name')).then((pall) => {
 					pallete = pall;
 				});
 
 				createTypo(fomrdata.get('buisness')).then((_response) => {
-					console.log(_response);
 					typo = _response;
 				});
 
@@ -60,6 +64,7 @@
 						typo={data.typography}
 						typo_p={typo}
 						colors={pallete}
+						packaging={packaging}
 					/>
 				{/if}
 			{/if}
