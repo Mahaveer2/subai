@@ -21,19 +21,28 @@ export async function getResult(type,bsName,desc) {
 
 export async function MakePackaging(buisness,name){
 	let img_url;
-	const response = await openai.createImage({
-		prompt:`create Packaging design for a ${buisness} buisness featuring its name is ${name}`,
-		n:6,
-		size:"1024x1024"
+	const resp = await openai.createCompletion({
+		model: 'text-davinci-003',
+		prompt: `Create a prompt for openai image generation to make a packaging design for a buisness named ${name} and the buisness is ${buisness}`,
+		max_tokens: 2000,
+		temperature: 0.4,
 	});
-	img_url = response.data.data;
-	return img_url;
+	let text = resp.data.choices[0].text;
+	if(text){
+		const response = await openai.createImage({
+			prompt:text,
+			n:6,
+			size:"1024x1024"
+		});
+		img_url = response.data.data;
+		return img_url;
+	}
 }
 
 export async function MakeImage(prompt,name){
 	let image_url;
 	const response = await openai.createImage({
-		prompt: prompt + " for the following company named "+ name,
+		prompt: prompt + " on the following company named "+ name,
 		n: 1,
 		size: "1024x1024",
 	});
