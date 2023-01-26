@@ -19,11 +19,11 @@ export async function getResult(type,bsName,desc) {
 	return JSON.parse(output);
 }
 
-export async function MakePackaging(buisness,details){
+export async function MakePackaging(buisness,name){
 	let img_url;
 	const response = await openai.createImage({
-		prompt:`Packaging design for a ${buisness} product featuring ${details}`,
-		n:4,
+		prompt:`create Packaging design for a ${buisness} buisness featuring its name is ${name}`,
+		n:6,
 		size:"1024x1024"
 	});
 	img_url = response.data.data;
@@ -59,7 +59,7 @@ export async function createPallete(type,bsName){
 		model: 'text-davinci-003',
 		prompt: `use the following json structure : {colorname,hexcode} to make an array of colors for the buisness ${type} the colors should match the buisness and must be atleast 5 items ;the json should be valid`,
 		max_tokens: 2000,
-		temperature: 0.2,
+		temperature: 0.4,
 	});
 	let resp = output.data.choices[0].text;
 	return JSON.parse(resp);
